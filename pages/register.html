@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - Serial Number Generator</title>
   <link rel="stylesheet" href="../styles/main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Shooting Stars -->
@@ -15,35 +16,49 @@
   <div class="shooting-star"></div>
   <div class="shooting-star"></div>
   
-  <div class="container">
+  <!-- Gradient Overlay for better text visibility -->
+  <div class="login-overlay"></div>
+  
+  <!-- Floating particles around login -->
+  <div class="cosmic-particle" style="top: 20%; left: 15%;"></div>
+  <div class="cosmic-particle" style="top: 30%; right: 20%;"></div>
+  <div class="cosmic-particle" style="bottom: 25%; left: 10%;"></div>
+  <div class="cosmic-particle" style="bottom: 35%; right: 15%;"></div>
+  <div class="cosmic-particle" style="top: 60%; left: 25%;"></div>
+  <div class="cosmic-particle" style="top: 70%; right: 30%;"></div>
+  
+  <div class="container login-container">
     <div class="card login-card">
-      <h1>📝 Create New Account</h1>
-      <p style="text-align: center; color: #666; margin-bottom: 30px;">Register a new user account</p>
+      <div class="login-header">
+        <div class="login-icon">🌟</div>
+        <h1>Create New Account</h1>
+        <p class="login-subtitle">Join us under the stars</p>
+      </div>
       
       <div id="alert"></div>
       
       <form id="registerForm">
         <div class="form-group">
-          <label for="username">Username *</label>
-          <input type="text" id="username" name="username" required autofocus>
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" placeholder="Choose a username" required autofocus>
         </div>
         
         <div class="form-group">
-          <label for="password">Password *</label>
-          <input type="password" id="password" name="password" required>
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Create a strong password" required>
         </div>
         
         <div class="form-group">
-          <label for="confirmPassword">Confirm Password *</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" required>
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
         </div>
         
         <button type="submit" class="btn btn-primary btn-block">Register</button>
       </form>
       
-      <div style="margin-top: 20px; text-align: center;">
-        <p style="color: #666;">Already have an account?</p>
-        <button class="btn btn-secondary" onclick="window.location.href='login.html'" style="margin-top: 10px;">
+      <div class="register-section">
+        <p>Already have an account?</p>
+        <button class="btn btn-info" onclick="window.location.href='login.html'">
           Back to Login
         </button>
       </div>
