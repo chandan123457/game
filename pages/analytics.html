@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../styles/main.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
+<body class="analytics-page">
   <!-- Shooting Stars -->
   <div class="shooting-star"></div>
   <div class="shooting-star"></div>
@@ -25,22 +25,71 @@
       </div>
     </div>
     
-    <div class="card">
-      <h2>Serial Number Analytics</h2>
-      
-      <div class="chart-container">
-        <h3>Serials per Model</h3>
-        <canvas id="modelChart"></canvas>
+    <div class="card analytics-card">
+      <div class="analytics-header">
+        <h2>Serial Number Analytics</h2>
+        <div class="analytics-subtitle">Real-time insights and performance metrics</div>
       </div>
       
-      <div class="chart-container">
-        <h3>Serials per Operator</h3>
-        <canvas id="operatorChart"></canvas>
+      <!-- Quick Stats Summary -->
+      <div class="analytics-summary">
+        <div class="summary-card" style="animation-delay: 0.1s;">
+          <div class="summary-icon">📊</div>
+          <div class="summary-value" id="totalModels">-</div>
+          <div class="summary-label">Models Tracked</div>
+        </div>
+        <div class="summary-card" style="animation-delay: 0.2s;">
+          <div class="summary-icon">👥</div>
+          <div class="summary-value" id="totalOperators">-</div>
+          <div class="summary-label">Active Operators</div>
+        </div>
+        <div class="summary-card" style="animation-delay: 0.3s;">
+          <div class="summary-icon">🔢</div>
+          <div class="summary-value" id="totalSerials">-</div>
+          <div class="summary-label">Total Serials</div>
+        </div>
       </div>
       
-      <div class="chart-container">
-        <h3>Total per Month (Last 12 Months)</h3>
-        <canvas id="monthChart"></canvas>
+      <div class="chart-container chart-animate" style="animation-delay: 0.4s;">
+        <div class="chart-header">
+          <h3>Serials per Model</h3>
+          <div class="chart-badge">Bar Chart</div>
+        </div>
+        <div class="chart-loader" id="modelLoader">
+          <div class="loader-spinner"></div>
+          <div class="loader-text">Loading data...</div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="modelChart" style="opacity: 0;"></canvas>
+        </div>
+      </div>
+      
+      <div class="chart-container chart-animate" style="animation-delay: 0.5s;">
+        <div class="chart-header">
+          <h3>Serials per Operator</h3>
+          <div class="chart-badge">Pie Chart</div>
+        </div>
+        <div class="chart-loader" id="operatorLoader">
+          <div class="loader-spinner"></div>
+          <div class="loader-text">Loading data...</div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="operatorChart" style="opacity: 0;"></canvas>
+        </div>
+      </div>
+      
+      <div class="chart-container chart-animate" style="animation-delay: 0.6s;">
+        <div class="chart-header">
+          <h3>Total per Month (Last 12 Months)</h3>
+          <div class="chart-badge">Line Chart</div>
+        </div>
+        <div class="chart-loader" id="monthLoader">
+          <div class="loader-spinner"></div>
+          <div class="loader-text">Loading data...</div>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="monthChart" style="opacity: 0;"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -69,8 +118,16 @@
       if (result.success) {
         const { byModel, byOperator, byMonth } = result.analytics;
         
-        // Model Chart
-        createChart('modelChart', {
+        // Update summary cards with animation
+        animateValue('totalModels', 0, byModel.length, 800);
+        animateValue('totalOperators', 0, byOperator.length, 900);
+        const totalSerials = byModel.reduce((sum, item) => sum + item.count, 0);
+        animateValue('totalSerials', 0, totalSerials, 1000);
+        
+        // Animate charts with staggered timing
+        setTimeout(() => {
+          hideLoader('modelLoader');
+          createChart('modelChart', {
           type: 'bar',
           data: {
             labels: byModel.map(item => item.modelNumber),
@@ -78,86 +135,183 @@
               label: 'Serial Numbers Generated',
               data: byModel.map(item => item.count),
               backgroundColor: [
-                'rgba(102, 126, 234, 0.8)',
-                'rgba(118, 75, 162, 0.8)',
-                'rgba(67, 233, 123, 0.8)'
+                'rgba(102, 126, 234, 0.85)',
+                'rgba(118, 75, 162, 0.85)',
+                'rgba(67, 233, 123, 0.85)',
+                'rgba(244, 63, 94, 0.85)',
+                'rgba(249, 115, 22, 0.85)',
+                'rgba(234, 179, 8, 0.85)'
               ],
               borderColor: [
                 'rgba(102, 126, 234, 1)',
                 'rgba(118, 75, 162, 1)',
-                'rgba(67, 233, 123, 1)'
+                'rgba(67, 233, 123, 1)',
+                'rgba(244, 63, 94, 1)',
+                'rgba(249, 115, 22, 1)',
+                'rgba(234, 179, 8, 1)'
               ],
-              borderWidth: 2
+              borderWidth: 2,
+              borderRadius: 8,
+              borderSkipped: false
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10
+              }
+            },
+            animation: {
+              duration: 1200,
+              easing: 'easeInOutQuart'
+            },
             scales: {
               y: {
                 beginAtZero: true,
                 ticks: {
                   stepSize: 1,
-                  color: '#ffffff'
+                  color: '#64748b',
+                  font: {
+                    size: 12,
+                    weight: '500'
+                  }
                 },
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: 'rgba(148, 163, 184, 0.2)',
+                  lineWidth: 1
                 }
               },
               x: {
                 ticks: {
-                  color: '#ffffff'
+                  color: '#64748b',
+                  font: {
+                    size: 12,
+                    weight: '500'
+                  }
                 },
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: 'rgba(148, 163, 184, 0.2)',
+                  lineWidth: 1
                 }
               }
             },
             plugins: {
               legend: {
                 display: false
+              },
+              tooltip: {
+                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                titleColor: '#ffffff',
+                bodyColor: '#e2e8f0',
+                padding: 12,
+                borderColor: 'rgba(102, 126, 234, 0.5)',
+                borderWidth: 1,
+                displayColors: true,
+                boxWidth: 12,
+                boxHeight: 12,
+                boxPadding: 8,
+                titleFont: {
+                  size: 14,
+                  weight: 'bold'
+                },
+                bodyFont: {
+                  size: 13
+                }
               }
             }
           }
         });
+        }, 400);
         
         // Operator Chart
-        createChart('operatorChart', {
+        setTimeout(() => {
+          hideLoader('operatorLoader');
+          createChart('operatorChart', {
           type: 'pie',
           data: {
             labels: byOperator.map(item => item.operatorCode),
             datasets: [{
               data: byOperator.map(item => item.count),
               backgroundColor: [
-                'rgba(255, 99, 132, 0.8)',
-                'rgba(54, 162, 235, 0.8)',
-                'rgba(255, 206, 86, 0.8)',
-                'rgba(75, 192, 192, 0.8)',
-                'rgba(153, 102, 255, 0.8)',
-                'rgba(255, 159, 64, 0.8)'
+                'rgba(244, 63, 94, 0.85)',
+                'rgba(59, 130, 246, 0.85)',
+                'rgba(234, 179, 8, 0.85)',
+                'rgba(20, 184, 166, 0.85)',
+                'rgba(168, 85, 247, 0.85)',
+                'rgba(249, 115, 22, 0.85)',
+                'rgba(102, 126, 234, 0.85)',
+                'rgba(67, 233, 123, 0.85)'
               ],
-              borderWidth: 2
+              borderColor: '#ffffff',
+              borderWidth: 3,
+              hoverBorderWidth: 4,
+              hoverOffset: 10
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: {
+                top: 20,
+                right: 20,
+                bottom: 20,
+                left: 20
+              }
+            },
+            animation: {
+              duration: 1200,
+              easing: 'easeInOutQuart',
+              animateRotate: true,
+              animateScale: true
+            },
             plugins: {
               legend: {
                 position: 'right',
                 labels: {
-                  color: '#ffffff',
+                  color: '#1e293b',
                   font: {
-                    size: 12
-                  }
+                    size: 12,
+                    weight: '500'
+                  },
+                  padding: 15,
+                  usePointStyle: true,
+                  pointStyle: 'circle'
+                }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                titleColor: '#ffffff',
+                bodyColor: '#e2e8f0',
+                padding: 12,
+                borderColor: 'rgba(102, 126, 234, 0.5)',
+                borderWidth: 1,
+                displayColors: true,
+                boxWidth: 12,
+                boxHeight: 12,
+                boxPadding: 8,
+                titleFont: {
+                  size: 14,
+                  weight: 'bold'
+                },
+                bodyFont: {
+                  size: 13
                 }
               }
             }
           }
         });
+        }, 800);
         
         // Month Chart
-        createChart('monthChart', {
+        setTimeout(() => {
+          hideLoader('monthLoader');
+          createChart('monthChart', {
           type: 'line',
           data: {
             labels: byMonth.map(item => item.month).reverse(),
@@ -168,41 +322,94 @@
               backgroundColor: 'rgba(102, 126, 234, 0.2)',
               borderWidth: 3,
               fill: true,
-              tension: 0.4
+              tension: 0.4,
+              pointRadius: 6,
+              pointHoverRadius: 8,
+              pointBackgroundColor: 'rgba(102, 126, 234, 1)',
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: false,
+            layout: {
+              padding: {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10
+              }
+            },
+            animation: {
+              duration: 1500,
+              easing: 'easeInOutQuart'
+            },
             scales: {
               y: {
                 beginAtZero: true,
                 ticks: {
                   stepSize: 1,
-                  color: '#ffffff'
+                  color: '#64748b',
+                  font: {
+                    size: 12,
+                    weight: '500'
+                  }
                 },
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: 'rgba(148, 163, 184, 0.2)',
+                  lineWidth: 1
                 }
               },
               x: {
                 ticks: {
-                  color: '#ffffff'
+                  color: '#64748b',
+                  font: {
+                    size: 12,
+                    weight: '500'
+                  }
                 },
                 grid: {
-                  color: 'rgba(255, 255, 255, 0.1)'
+                  color: 'rgba(148, 163, 184, 0.2)',
+                  lineWidth: 1
                 }
               }
             },
             plugins: {
               legend: {
                 labels: {
-                  color: '#ffffff'
+                  color: '#1e293b',
+                  font: {
+                    size: 12,
+                    weight: '500'
+                  },
+                  padding: 12,
+                  usePointStyle: true
+                }
+              },
+              tooltip: {
+                backgroundColor: 'rgba(30, 41, 59, 0.95)',
+                titleColor: '#ffffff',
+                bodyColor: '#e2e8f0',
+                padding: 12,
+                borderColor: 'rgba(102, 126, 234, 0.5)',
+                borderWidth: 1,
+                displayColors: true,
+                boxWidth: 12,
+                boxHeight: 12,
+                boxPadding: 8,
+                titleFont: {
+                  size: 14,
+                  weight: 'bold'
+                },
+                bodyFont: {
+                  size: 13
                 }
               }
             }
           }
         });
+        }, 1200);
       }
     }
     
@@ -212,6 +419,40 @@
         charts[canvasId].destroy();
       }
       charts[canvasId] = new Chart(ctx, config);
+      
+      // Fade in canvas after chart is created
+      setTimeout(() => {
+        ctx.style.transition = 'opacity 0.8s ease-in-out';
+        ctx.style.opacity = '1';
+      }, 100);
+    }
+    
+    function hideLoader(loaderId) {
+      const loader = document.getElementById(loaderId);
+      if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 400);
+      }
+    }
+    
+    function animateValue(elementId, start, end, duration) {
+      const element = document.getElementById(elementId);
+      if (!element) return;
+      
+      const range = end - start;
+      const increment = range / (duration / 16);
+      let current = start;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+          current = end;
+          clearInterval(timer);
+        }
+        element.textContent = Math.floor(current).toLocaleString();
+      }, 16);
     }
     
     function navigate(page) {
