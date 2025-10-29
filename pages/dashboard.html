@@ -4,52 +4,89 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard - Serial Number Generator</title>
-  <link rel="stylesheet" href="../styles/main.css">
+  <link rel="stylesheet" href="../styles/dashboard-light.css?v=3.0">
 </head>
-<body>
-  <!-- Shooting Stars -->
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
-  <div class="shooting-star"></div>
+<body class="dashboard-light">
+  <!-- Light Sparkles Background -->
+  <div class="light-sparkles"></div>
+  <div class="light-dot"></div>
+  <div class="light-dot"></div>
+  <div class="light-dot"></div>
+  <div class="light-dot"></div>
   
-  <div class="container">
-    <div class="nav">
-      <div class="nav-title">📊 Dashboard</div>
-      <div class="nav-user">
-        Welcome, <span id="userName"></span> (<span id="userRole"></span>)
-        <button class="logout-btn" onclick="logout()">Logout</button>
+  <div class="dashboard-container-light">
+    <div class="dashboard-nav-light">
+      <div class="nav-title-light">
+        <span class="nav-icon-light">✨</span>
+        <span>Dashboard</span>
+      </div>
+      <div class="nav-user-light">
+        <span class="user-name-light" id="userName"></span>
+        <span class="user-role-badge-light" id="userRole"></span>
+        <button class="logout-btn-light" onclick="logout()">
+          <span>Logout</span>
+          <span>🚀</span>
+        </button>
       </div>
     </div>
     
-    <div class="card">
-      <div class="dashboard-stats">
-        <div class="stat-card">
-          <div class="stat-number" id="monthlyCount">0</div>
-          <div class="stat-label">Serials Generated This Month</div>
-        </div>
-        <div class="stat-card" id="userCountCard" style="display: none; background: linear-gradient(135deg, #ff9a56 0%, #ff6a88 100%);">
-          <div class="stat-number" id="userCount">0</div>
-          <div class="stat-label">Total Registered Users</div>
+    <div class="dashboard-card-light">
+      <div class="dashboard-section-light">
+        <h2>📊 Statistics Overview</h2>
+        
+        <div class="stats-grid-light">
+          <div class="stat-card-light">
+            <div class="stat-icon-light">🎯</div>
+            <div class="stat-number-light" id="monthlyCount">0</div>
+            <div class="stat-label-light">Serials This Month</div>
+          </div>
+          
+          <div class="stat-card-light">
+            <div class="stat-icon-light">📅</div>
+            <div class="stat-number-light" id="totalCount">0</div>
+            <div class="stat-label-light">Total Serials Generated</div>
+          </div>
+          
+          <div class="stat-card-light">
+            <div class="stat-icon-light">👤</div>
+            <div class="stat-number-light" id="userCount">0</div>
+            <div class="stat-label-light">Active Users</div>
+          </div>
         </div>
       </div>
       
-      <h2>Quick Actions</h2>
-      <div class="action-buttons">
-        <button class="action-btn generate" onclick="navigate('generate.html')">
-          ➕ Generate Serial Numbers
-        </button>
-        <button class="action-btn reports" onclick="navigate('reports.html')">
-          📋 View Monthly Reports
-        </button>
-        <button class="action-btn analytics" onclick="navigate('analytics.html')">
-          📈 Analytics
-        </button>
-        <button class="action-btn admin" id="adminBtn" onclick="navigate('admin.html')" style="display: none;">
-          👤 Admin Panel
-        </button>
+      <div class="dashboard-section-light">
+        <h2>⚡ Quick Actions</h2>
+        
+        <div class="actions-grid-light">
+          <button class="action-btn-light" onclick="navigate('generate.html')">
+            <span class="action-icon-light">➕</span>
+            <span class="action-text-light">Generate Serial Numbers</span>
+          </button>
+          <button class="action-btn-light" onclick="navigate('reports.html')">
+            <span class="action-icon-light">📋</span>
+            <span class="action-text-light">View Monthly Reports</span>
+          </button>
+          <button class="action-btn-light" onclick="navigate('analytics.html')">
+            <span class="action-icon-light">📈</span>
+            <span class="action-text-light">Analytics</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="dashboard-section-light" id="adminSection" style="display: none;">
+        <h2>⚙️ Administration</h2>
+        
+        <div class="actions-grid-light">
+          <button class="action-btn-light" onclick="navigate('admin.html')">
+            <span class="action-icon-light">⚙️</span>
+            <span class="action-text-light">Admin Panel</span>
+          </button>
+          <button class="action-btn-light" onclick="navigate('users.html')">
+            <span class="action-icon-light">👥</span>
+            <span class="action-text-light">Manage Users</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -71,22 +108,32 @@
       document.getElementById('userName').textContent = currentUser.username;
       document.getElementById('userRole').textContent = currentUser.role;
       
-      // Show admin button if user is admin
+      // Show admin section if user is admin
       if (currentUser.role === 'Admin') {
-        document.getElementById('adminBtn').style.display = 'block';
+        document.getElementById('adminSection').style.display = 'block';
         
         // Show user count for admin
-        document.getElementById('userCountCard').style.display = 'block';
         const usersResult = await ipcRenderer.invoke('get-all-users');
         if (usersResult.success) {
           document.getElementById('userCount').textContent = usersResult.users.length;
         }
+      } else {
+        document.getElementById('userCount').textContent = '1';
       }
       
       // Load monthly count
-      const result = await ipcRenderer.invoke('get-monthly-count', currentUser.role === 'Admin' ? null : currentUser.id);
-      if (result.success) {
-        document.getElementById('monthlyCount').textContent = result.count;
+      const monthlyResult = await ipcRenderer.invoke('get-monthly-count', currentUser.role === 'Admin' ? null : currentUser.id);
+      if (monthlyResult.success) {
+        document.getElementById('monthlyCount').textContent = monthlyResult.count;
+      }
+      
+      // Load total count
+      const totalResult = await ipcRenderer.invoke('get-all-serials');
+      if (totalResult.success) {
+        const userSerials = currentUser.role === 'Admin' 
+          ? totalResult.serials 
+          : totalResult.serials.filter(s => s.user_id === currentUser.id);
+        document.getElementById('totalCount').textContent = userSerials.length;
       }
     }
     
@@ -99,7 +146,7 @@
       window.location.href = 'login.html';
     }
     
-    init();
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>

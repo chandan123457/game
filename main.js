@@ -5,6 +5,13 @@ const XLSX = require('xlsx');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
+// Disable GPU hardware acceleration to fix GL errors
+app.disableHardwareAcceleration();
+
+// Suppress GL warnings
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+
 let mainWindow;
 let db;
 
@@ -110,6 +117,15 @@ ipcMain.handle('generate-serial', async (event, data) => {
 ipcMain.handle('get-serials', async (event, userId) => {
   try {
     const serials = userId ? db.getSerialsForUser(userId) : db.getAllSerials();
+    return { success: true, serials };
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
+});
+
+ipcMain.handle('get-all-serials', async () => {
+  try {
+    const serials = db.getAllSerials();
     return { success: true, serials };
   } catch (error) {
     return { success: false, message: error.message };

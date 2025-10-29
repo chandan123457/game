@@ -1,0 +1,259 @@
+/* ========================================
+   CLEAN & MODERN DASHBOARD THEME
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body.dashboard-light {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #f8fafc;
+  color: #334155;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.light-sparkles,
+.light-dot {
+  display: none;
+}
+
+.dashboard-container-light {
+  padding: 30px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-nav-light {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #e2e8f0;
+}
+
+.nav-title-light {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.nav-icon-light {
+  font-size: 24px;
+  color: #3b82f6;
+}
+
+.nav-user-light {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.user-name-light {
+  font-size: 14px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.user-role-badge-light {
+  padding: 4px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #3b82f6;
+  text-transform: uppercase;
+}
+
+.logout-btn-light {
+  padding: 8px 20px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #ef4444;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.logout-btn-light:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.dashboard-card-light {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.dashboard-section-light {
+  margin-bottom: 32px;
+}
+
+.dashboard-section-light h2 {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.stats-grid-light {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-card-light {
+  padding: 24px 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.stat-card-light:nth-child(1) {
+  border-top: 3px solid #10b981;
+}
+
+.stat-card-light:nth-child(2) {
+  border-top: 3px solid #3b82f6;
+}
+
+.stat-card-light:nth-child(3) {
+  border-top: 3px solid #f59e0b;
+}
+
+.stat-card-light:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.stat-icon-light {
+  font-size: 32px;
+  margin-bottom: 12px;
+  opacity: 0.8;
+}
+
+.stat-card-light:nth-child(1) .stat-icon-light {
+  color: #10b981;
+}
+
+.stat-card-light:nth-child(2) .stat-icon-light {
+  color: #3b82f6;
+}
+
+.stat-card-light:nth-child(3) .stat-icon-light {
+  color: #f59e0b;
+}
+
+.stat-number-light {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 8px 0;
+}
+
+.stat-label-light {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.actions-grid-light {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.action-btn-light {
+  padding: 24px 20px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  min-height: 130px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  background: #ffffff;
+}
+
+.action-btn-light:nth-child(1) {
+  border-left: 4px solid #10b981;
+}
+
+.action-btn-light:nth-child(2) {
+  border-left: 4px solid #f59e0b;
+}
+
+.action-btn-light:nth-child(3) {
+  border-left: 4px solid #3b82f6;
+}
+
+.action-btn-light:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.action-icon-light {
+  font-size: 36px;
+  opacity: 0.9;
+}
+
+.action-btn-light:nth-child(1) .action-icon-light {
+  color: #10b981;
+}
+
+.action-btn-light:nth-child(2) .action-icon-light {
+  color: #f59e0b;
+}
+
+.action-btn-light:nth-child(3) .action-icon-light {
+  color: #3b82f6;
+}
+
+.action-text-light {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 1024px) {
+  .stats-grid-light,
+  .actions-grid-light {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .stats-grid-light,
+  .actions-grid-light {
+    grid-template-columns: 1fr;
+  }
+}
